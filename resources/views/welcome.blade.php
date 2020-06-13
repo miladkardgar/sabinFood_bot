@@ -479,14 +479,8 @@
         </div>
 
         <div class="links">
-            <a href="/botman/tinker">Tinker</a>
-            <a href="https://botman.io/docs" target="_blank">Documentation</a>
-            <a href="https://twitter.com/botman_io" target="_blank">News</a>
-            <a href="https://rauchg-slackin-jtdkltstsj.now.sh/" target="_blank">Slack</a>
-            <a href="https://github.com/botman/botman" target="_blank">GitHub</a>
-        </div>
-        <div class="links">
             <a href="https://api.telegram.org/bot{{env('TELEGRAM_TOKEN')}}/setWebhook?url=https://195.248.242.47/botman">SetWebhook</a>
+            <a href="https://api.telegram.org/bot{{env('TELEGRAM_TOKEN')}}/getWebhookInfo">GetWebhookInfo</a>
         </div>
     </div>
 </div>
