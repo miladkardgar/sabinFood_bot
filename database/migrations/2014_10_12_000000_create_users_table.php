@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('chat_id');
             $table->string('first_name')->nullable();
-            $table->string('lastName_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('username')->unique();
             $table->json('extra')->nullable();
             $table->string('password')->nullable();

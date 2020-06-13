@@ -17,3 +17,6 @@ Route::get('/', function () {
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');
+Route::get('/setWebhook', 'Controller@setWebhook');
+Route::get('/getUpdates', 'Controller@getUpdate');
+Route::get('/getWebhookInfo', 'Controller@getWebhookInfo');

@@ -479,9 +479,26 @@
         </div>
 
         <div class="links">
-            <a href="https://api.telegram.org/bot{{env('TELEGRAM_TOKEN')}}/setWebhook?url=https://195.248.242.47/botman">SetWebhook</a>
-            <a href="https://api.telegram.org/bot{{env('TELEGRAM_TOKEN')}}/getWebhookInfo">GetWebhookInfo</a>
+            <a href="setWebhook">setWebhook</a>
+            <a href="getWebhookInfo">getWebhookInfo</a>
+            <a href="getUpdates">getUpdates</a>
         </div>
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if(session()->get('type'))
+            <div class="alert alert-{{session()->get('type')}}">
+                <ul>
+                    <li>{{session()->get('message')}}</li>
+                </ul>
+            </div>
+        @endif
     </div>
 </div>
 </body>
