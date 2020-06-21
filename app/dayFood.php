@@ -16,4 +16,9 @@ class dayFood extends Model
         return $this->hasOne('App\foodList', 'id', 'food_id');
 
     }
+
+    public function user()
+    {
+        return $this->hasMany('App\reserve','dayFood_id','id')->with('users');
+    }
 }

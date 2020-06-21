@@ -11,6 +11,9 @@
 |
 */
 
+use App\reserve;
+use App\User;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -27,3 +30,14 @@ Route::resource('/foodList', 'foodList');
 Route::resource('/foodDay', 'foodDay');
 Route::post('/foodDay/reserve', 'foodDay@reserve')->name('foodDay.reserve');
 Route::post('/foodDay/reserve/list', 'foodDay@reserveList')->name('foodDay.reserveList');
+Route::post('/foodDay/reserve/list/day', 'foodDay@reserveListDay')->name('foodDay.reserveListDay');
+Route::get('/reserve', 'foodDay@reserveUser')->name('foodDay.reserveUser');
+
+
+Route::get('/test',function (){
+        $lists = reserve::with('foodDay')->where('user_id',1)->get();
+        dd($lists);
+        foreach ($lists as $list) {
+            dd($list);
+        }
+});

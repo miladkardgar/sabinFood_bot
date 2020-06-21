@@ -138,27 +138,16 @@
                                     <span class="year"></span>
                                 </h3>
                             </div>
-                            <div class="col-12 form-group">
-                                <label for="title">نوع غذا</label>
-                                <select name="food" id="food" class="form-control">
-                                    <option value="" disabled>انتخاب نمایید.</option>
-                                    @forelse($foodList as $food)
-                                        <option value="{{$food['id']}}">{{$food['title']}} | {{$food['price']}} <small>تومان</small>
-                                        </option>
-                                    @empty
-                                    @endforelse
-                                </select>
+                            <div class="col-12 form-group text-center">
+                                <label for="title">نوع غذا: </label>
+                                <strong class="food"></strong>
+                            </div>
+                            <div class="col-12 form-group text-center">
+                                <label for="title">قیمت: </label>
+                                <strong class="price"></strong><small> تومان</small>
                             </div>
                             <div class="col-12 form-group">
-                                <label for="title">وعده غذایی</label>
-                                <select name="type" id="type" class="form-control">
-                                    <option value="" disabled>انتخاب نمایید.</option>
-                                    <option value="lunch">ناهار</option>
-                                    <option value="dinner">شام</option>
-                                </select>
-                            </div>
-                            <div class="col-12 form-group">
-                                <button type="submit" class="btn btn-success float-left px-3">ثبت</button>
+                                <button type="submit" class="btn btn-success float-left px-3">رزرو</button>
                             </div>
                         </div>
                     </form>
@@ -200,7 +189,13 @@
     <script src="{{asset('/calendar/scripts/hijri.js')}}"></script>
 
     <script>
-        function modalPopUp(time, day, month, year, occasion, dayOff, user) {
+        function comma(value) {
+            return value
+                .replace(/\D/g, "")
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                ;
+        }
+        function modalPopUp(time, day, month, year, occasion, dayOff, user, food, price) {
             var modal;
             if (dayOff == 0) {
                 modal = $("#modalFoodOrder")
@@ -213,6 +208,8 @@
             $(modal).find(".year").html(year);
             $(modal).find(".occasion").html(occasion);
             $(modal).find(".user").html(user);
+            $(modal).find(".food").html(food);
+            $(modal).find(".price").html(comma(price));
             $(modal).modal('show')
         }
 
@@ -298,6 +295,7 @@
                         }
                         var res = '';
                         var countUser = 0;
+                        var food = '';
                         $.each(reserveList.data, function (index, item) {
                             var dates = nowDate;
                             var dates1 = dates.split("-");
@@ -309,8 +307,8 @@
                             var finalTimeDateRes = new Date(newDate).getTime();
 
                             if (finalTimeRes === finalTimeDateRes) {
-                                res = res + '<p><span>' + item.title + '</span> | <strong class="text-danger">' + item.type + '</strong>' +
-                                    ' <a href="javascript:;" class="btn btn-sm btn-outline-danger" onclick="deletes(' + item.id + ')"><i class="fa fa-trash"></i></a></p><p> تعداد سفارش:' + item.users + '</p>';
+                                res = res + '<p><span>' + item.title + '</span> | <strong class="text-danger">' + item.type + '</strong>';
+                                food = item.title;
                             }
                         });
 
@@ -318,6 +316,7 @@
                         $(element).attr("data-gr", (today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()));
                         $(element).attr("data-hj", (g2h.hy + "-" + (g2h.hm + 1) + "-" + g2h.hd));
                         $(element).attr("data-dayOff", dayOff);
+                        $(element).attr("data-food", food);
                         $(element).html(
                             "<b>" + count + "</b>" + "\n" +
                             "<span>" +
@@ -330,29 +329,10 @@
                             today.getDate() + " " +
                             today.getFullYear() +
                             "</div></span>" + res
-                    )
+                        )
                         ;
                         count++;
                     }
-                },
-                error: function () {
-                    console.log("error!!!");
-                }
-            });
-        }
-
-        function deletes(id) {
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            })
-            $.ajax({
-                url: "/foodDay/" + id,
-                type: "DELETE",
-                date: {id: id},
-                success: function (data) {
-                    return window.location.reload();
                 },
                 error: function () {
                     console.log("error!!!");
@@ -422,13 +402,17 @@
                             data: {mYear: jl[0], mMonth: jl[1], mDay: jl[2]},
                             success: function (data) {
                                 userFinal = '<ul>';
+                                var food = '';
+                                var price = '';
                                 $.each(data, function (index, user) {
                                     $.each(user.users, function (index2, user2) {
                                         userFinal = userFinal + '<li>' + user2 + '</li>';
                                     });
+                                    food = user.title;
+                                    price = user.price;
                                 });
                                 userFinal = userFinal + '</ul>';
-                                modalPopUp(time, jl[2], jl[1], jl[0], content, dOf, userFinal);
+                                modalPopUp(time, jl[2], jl[1], jl[0], content, dOf, userFinal, food, price);
                             },
                             error: function () {
                                 console.log("error!!!");

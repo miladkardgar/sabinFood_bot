@@ -29,12 +29,9 @@ class startConversation extends Conversation
     public function start()
     {
         $question = Question::create("سلام \n به ربات رزرو غذای سابین خوش آمدید.\n\n
-        با این ربات میتوانید غذای ناهار خود را برای هفته جاری رزرو نمایید.")
-            ->fallback('Unable to ask question')
-            ->callbackId('start')
-            ->addButtons([
-                Button::create('شروع استفاده از ربات')->value('startUse'),
-            ]);
+        با این ربات میتوانید غذای ناهار خود را برای هفته جاری رزرو نمایید.")->fallback('Unable to ask question')->callbackId('start')->addButtons([
+            Button::create('شروع استفاده از ربات')->value('startUse'),
+        ]);
 
         $this->ask($question, function (Answer $answer) {
             if ($answer->getValue() === 'startUse') {
@@ -46,10 +43,10 @@ class startConversation extends Conversation
                 $u = User::where('chat_id', $chatId)->first();
                 if (!$u) {
                     $userInfo = new User();
-                    $userInfo->first_name = $fistName;
-                    $userInfo->last_name = $lastName;
-                    $userInfo->chat_id = $chatId;
-                    $userInfo->username = $username;
+                    $userInfo->first_name = isset($fistName) ? $fistName : "";
+                    $userInfo->last_name = isset($lastName) ? $lastName : "";
+                    $userInfo->chat_id = isset($chatId) ? $chatId : 0;
+                    $userInfo->username = isset($username) ? $username : 0;
                     $userInfo->save();
                     $userID = $userInfo['id'];
                     $adminMessage = $fistName . " " . $lastName . "\n\n" . " عضو سیستم شد.";

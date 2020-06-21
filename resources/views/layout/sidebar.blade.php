@@ -21,15 +21,9 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('foodDay.reserveUser')}}">
                     <i class="fa fa-th-list"></i>
-                    گزارشات
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="layers"></span>
-                    Integrations
+                    رزرو غذا
                 </a>
             </li>
         </ul>
@@ -41,30 +35,13 @@
             </a>
         </h6>
         <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Current month
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Last quarter
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Social engagement
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Year-end sale
-                </a>
-            </li>
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link" href="#">--}}
+{{--                    <span data-feather="file-text"></span>--}}
+{{--                    Current month--}}
+{{--                </a>--}}
+{{--            </li>--}}
+
         </ul>
     </div>
 </nav>

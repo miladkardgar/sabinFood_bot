@@ -129,30 +129,74 @@ class foodDay extends Controller
 
     public function reserveList(Request $request)
     {
-        $month = $request['mMonth'] +1;
+        $month = $request['mMonth'] + 1;
         $year = $request['mYear'];
-        $firstDate = jmktime('10', '10', '10', $month, 1,$year);
+        $firstDate = jmktime('10', '10', '10', $month, 1, $year);
         $lastDay = jdate('t', $firstDate, '', '', 'en');
         $firstDate = date("Y-m-d", $firstDate);
 
         $lastDate = jmktime('10', '10', '10', $month, $lastDay, $year);
         $lastDate = date("Y-m-d", $lastDate);
 
-        $data = dayFood::with('food')->whereBetween('date', [$firstDate, $lastDate])->get();
+        $data = dayFood::with('food', 'user')->whereBetween('date', [$firstDate, $lastDate])->get();
         $final = $data->map(function ($data) {
             $type = 'شام';
             if ($data['type'] == 'lunch') {
                 $type = 'ناهار';
             }
+            $u = sizeof($data['user']);
+//            foreach ($data['user'] as $item) {
+//                array_push($u, $item['users']['first_name'] . " " . $item['users']['last_name']);
+//            }
+
             return [
                 'id' => $data['id'],
                 'title' => $data['food']['title'],
                 'price' => $data['food']['price'],
                 'type' => $type,
-                'date' => $data['date']
+                'date' => $data['date'],
+                'users' => $u
             ];
         });
         return $final->toJson();
+    }
+
+
+    public function reserveListDay(Request $request)
+    {
+        $month = $request['mMonth'];
+        $year = $request['mYear'];
+        $day = $request['mDay'];
+        $firstDate = jmktime('10', '10', '10', $month, $day, $year);
+        $firstDate = date("Y-m-d", $firstDate);
+
+        $data = dayFood::with('food', 'user')->where('date', $firstDate)->get();
+        $final = $data->map(function ($data) {
+            $type = 'شام';
+            if ($data['type'] == 'lunch') {
+                $type = 'ناهار';
+            }
+            $u = [];
+            foreach ($data['user'] as $item) {
+                array_push($u, $item['users']['first_name'] . " " . $item['users']['last_name']);
+            }
+
+            return [
+                'id' => $data['id'],
+                'title' => $data['food']['title'],
+                'price' => $data['food']['price'],
+                'type' => $type,
+                'date' => $data['date'],
+                'users' => $u
+            ];
+        });
+        return $final->toJson();
+    }
+
+    public function reserveUser()
+    {
+        $foodList = \App\foodList::list('active');
+        return view('reserve.index',compact('foodList'));
     }
 
 }

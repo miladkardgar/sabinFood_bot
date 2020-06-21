@@ -16,6 +16,7 @@ class foodReserve extends Conversation
 
     public function start()
     {
+
         $userInfo = $this->bot->getUser();
         $user = User::where('chat_id', $userInfo->getId())->first();
         if (isset($user['id'])) {
@@ -56,12 +57,17 @@ class foodReserve extends Conversation
                         ]);
 
                 $this->ask($question, function (Answer $answer) {
+
                     $response = $answer->getValue();
-                    $response = explode("_", $response);
-                    $this->bot->userStorage()->save([
-                        'foodDay' => $response[1],
-                    ]);
-                    $this->askDescription();
+                    $response = explode('_', $response);
+                    if (isset($response[1])) {
+                        $this->bot->userStorage()->save([
+                            'foodDay' => $response[1],
+                        ]);
+                        $this->askDescription();
+                    } else {
+                        $this->start();
+                    }
                 });
             }
         } else {
@@ -101,26 +107,28 @@ class foodReserve extends Conversation
                         'description' => $description
                     ]
                 );
-            $dayInfo = dayFood::find($this->bot->userStorage()->get('foodDay'));
-            $message = "✅ روزو غذا برای روز " . "\n\n 📆️" . jdate("l | d | F | y", strtotime($dayInfo['date'])) . "\n\n" . "با موفقیت انجام پذیرفت.😊";
-            $this->say($message);
-            }else{
+                $dayInfo = dayFood::find($this->bot->userStorage()->get('foodDay'));
+                $message = "✅ روزو غذا برای روز " . "\n\n 📆️" . jdate("l | d | F | y", strtotime($dayInfo['date'])) . "\n\n" . "با موفقیت انجام پذیرفت.😊"."\n\n";
+                $message .= 'لیست رزرو' . "\n";
+                $message .= '/reserveList';
+                $this->say($message);
+            } else {
                 $message = "رزرو غذای شما قبلا ثبت شده است.";
                 $this->say($message);
             }
         });
 
-}
+    }
 
-/**
- * Start the conversation.
- *
- * @return mixed
- */
-public
-function run()
-{
-    //
-    $this->start();
-}
+    /**
+     * Start the conversation.
+     *
+     * @return mixed
+     */
+    public
+    function run()
+    {
+        //
+        $this->start();
+    }
 }
