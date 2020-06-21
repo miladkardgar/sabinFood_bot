@@ -7,7 +7,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Request;
 
 class Controller extends BaseController
 {
@@ -20,43 +19,57 @@ class Controller extends BaseController
     {
         $this->telegramToken = env('TELEGRAM_TOKEN');
     }
+
+    public function index()
+    {
+        return view('index');
+    }
+
+    public function botController()
+    {
+        return view('welcome');
+    }
+
+
     public function setWebhook()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->get('https://api.telegram.org/bot'.$this->telegramToken.'/setWebhook?url=https://195.248.242.47/botman');
+        $response = $client->get('https://api.telegram.org/bot' . $this->telegramToken . '/setWebhook?url=https://sabin.drrejeem.ir/botman');
 
         echo "<hr>";
         echo "<br>";
         echo "<h3>Set Information</h3>";
         echo "<br><br>";
-        echo "Result Code: " .  $response->getStatusCode(); # 200
+        echo "Result Code: " . $response->getStatusCode(); # 200
         echo "<br>";
-        echo "result: " .  $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
+        echo "result: " . $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
         echo "<br>";
         echo "<hr>";
         $this->info();
     }
+
     public function getWebhookInfo()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->get('https://api.telegram.org/bot'.$this->telegramToken.'/getWebhookInfo');
+        $response = $client->get('https://api.telegram.org/bot' . $this->telegramToken . '/getWebhookInfo');
         echo "<hr>";
         echo "<br>";
         echo "<h3>Info</h3>";
         echo "<br><br>";
-        echo "Result Code: " .  $response->getStatusCode(); # 200
+        echo "Result Code: " . $response->getStatusCode(); # 200
         echo "<br>";
-        echo "result: " .  $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
+        echo "result: " . $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
         echo "<br>";
         echo "<hr>";
 
 
     }
+
     public function getUpdate()
     {
         $client = new \GuzzleHttp\Client();
         $this->disable();
-        $response = $client->get('https://api.telegram.org/bot'.$this->telegramToken.'/getUpdates');
+        $response = $client->get('https://api.telegram.org/bot' . $this->telegramToken . '/getUpdates');
         echo "<hr>";
         echo "<br>";
         echo "<h3>Update Info</h3>";
@@ -73,12 +86,12 @@ class Controller extends BaseController
             echo "<br>";
             echo "<h3>delete Pending Message</h3>";
             echo "<br><br>";
-            echo "update ID: " .  $updateId;
+            echo "update ID: " . $updateId;
             echo "<br>";
             $client = new \GuzzleHttp\Client();
             $updateId += 1;
             echo "new Update ID: " . $updateId;
-            $response = $client->get('https://api.telegram.org/bot'.$this->telegramToken.'/getUpdates?offset=' . $updateId);
+            $response = $client->get('https://api.telegram.org/bot' . $this->telegramToken . '/getUpdates?offset=' . $updateId);
             echo "<br>";
             echo "result: " . $response->getStatusCode(); # 200
             $this->setWebhook();
@@ -88,11 +101,12 @@ class Controller extends BaseController
         $this->info();
 
     }
+
     public function disable()
     {
         $this->info();
         $client = new \GuzzleHttp\Client();
-        $response = $client->get('https://api.telegram.org/bot'.$this->telegramToken.'/setWebhook');
+        $response = $client->get('https://api.telegram.org/bot' . $this->telegramToken . '/setWebhook');
         echo "<hr>";
         echo "<br>";
         echo "<h3>disabled</h3>";
@@ -104,17 +118,18 @@ class Controller extends BaseController
         echo "<hr>";
 
     }
+
     public function info()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->get('https://api.telegram.org/bot'.$this->telegramToken.'/getWebhookInfo');
+        $response = $client->get('https://api.telegram.org/bot' . $this->telegramToken . '/getWebhookInfo');
         echo "<hr>";
         echo "<br>";
         echo "<h3>Info</h3>";
         echo "<br><br>";
-        echo "Result Code: " .  $response->getStatusCode(); # 200
+        echo "Result Code: " . $response->getStatusCode(); # 200
         echo "<br>";
-        echo "result: " .  $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
+        echo "result: " . $response->getBody(); # '{"id": 1420053, "name": "guzzle", ...}'
         echo "<br>";
         echo "<hr>";
     }

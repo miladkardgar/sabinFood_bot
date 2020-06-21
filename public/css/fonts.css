@@ -1,0 +1,24 @@
+@font-face {
+    font-family: IRANSans;
+    src: url(../webfonts/IRANSans/IRANSansWeb.eot) format('eot'),
+    url(../webfonts/IRANSans/IRANSansWeb.ttf) format('ttf'),
+    url(../webfonts/IRANSans/IRANSansWeb.woff2) format('woff2'),
+    url(../webfonts/IRANSans/IRANSansWeb.woff) format('woff');
+    src: local("IRANSans"), url("../webfonts/IRANSans/IRANSansWeb.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: "IRANSans-Bold";
+    src: url(../webfonts/IRANSans/IRANSansWeb_Bold.eot);
+    src: local("IRANSans-Bold"), url("../webfonts/IRANSans/IRANSansWeb_Bold.ttf") format("truetype");
+
+}
+
+*{
+    font-family: IRANSans!important;
+}
+body{
+    font-family: IRANSans,"Times New Roman"!important;
+}

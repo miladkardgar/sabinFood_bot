@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Conversations\startConversation;
 use BotMan\BotMan\BotMan;
-use Illuminate\Http\Request;
-use App\Conversations\ExampleConversation;
 
-class BotManController extends Controller
+class foodController extends Controller
 {
     /**
      * Place your BotMan logic here.

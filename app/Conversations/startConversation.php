@@ -8,6 +8,7 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\Drivers\Telegram\TelegramDriver;
+use Illuminate\Support\Facades\Artisan;
 
 class startConversation extends Conversation
 {
@@ -25,7 +26,7 @@ class startConversation extends Conversation
         $bot->say("\xF0\x9F\x94\xB4	\xF0\x9F\x94\xB4	\xF0\x9F\x94\xB4	\xF0\x9F\x94\xB4	" . "\n\n" . $Message . "\n\n \xF0\x9F\x94\xB4	\xF0\x9F\x94\xB4	\xF0\x9F\x94\xB4	\xF0\x9F\x94\xB4	", env('ADMIN_ID'), TelegramDriver::class);
     }
 
-    public function storeData()
+    public function start()
     {
         $question = Question::create("سلام \n به ربات رزرو غذای سابین خوش آمدید.\n\n
         با این ربات میتوانید غذای ناهار خود را برای هفته جاری رزرو نمایید.")
@@ -52,12 +53,14 @@ class startConversation extends Conversation
                     $userInfo->save();
                     $userID = $userInfo['id'];
                     $adminMessage = $fistName . " " . $lastName . "\n\n" . " عضو سیستم شد.";
-                    $this->adminMessage($adminMessage);
+//                    $this->adminMessage($adminMessage);
                 } else {
                     $userID = $u['id'];
                     $adminMessage = $fistName . " " . $lastName . "\n\n" . " وارد سیستم شد.";
-                    $this->adminMessage($adminMessage);
+//                    $this->adminMessage($adminMessage);
                 }
+                Artisan::call('cache:clear');
+                sleep(2);
                 $this->askDay($userID);
             }
         });
@@ -66,37 +69,13 @@ class startConversation extends Conversation
 
     public function askDay($userID)
     {
-        $btn = '';
-        for ($currentDay = jdate('N', time()); $currentDay == 7; $currentDay++) {
-            $btn .=
-                "Button::create('" . jdate("l", strtotime("+" . $currentDay . " days", time())) . "')->value('" . $currentDay . "'),";
-        }
-        $question = Question::create("لطفاً روز هفته را مشخص نمایید.")
-            ->fallback('Unable to ask question')
-            ->callbackId('start')
-            ->addButtons([
-                $btn
-            ]);
-        $this->ask($question, function (Answer $answer) {
-            $selectedDay = $answer->getValue();
-            switch ($selectedDay) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-            }
-        });
-
+        $message = "ثبت نام شما تکمیل شد. \n\n";
+        $message .= "برای استفاده از ربات میتوانید از منو زیر شروع کنید.\n\n";
+        $message .= "رزرو غذا" . "\n";
+        $message .= "/reserve" . "\n\n";
+        $message .= "مشاهده غذاهای رزرو شده" . "\n";
+        $message .= "/reserveList" . "\n";
+        $this->say($message);
     }
 
     /**
@@ -107,5 +86,6 @@ class startConversation extends Conversation
     public function run()
     {
         //
+        $this->start();
     }
 }

@@ -17,6 +17,7 @@ class CreateFoodListsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->mediumText('description')->nullable();
+            $table->string('price')->default(0);
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

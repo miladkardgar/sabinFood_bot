@@ -23,3 +23,21 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\role::class, function (Faker $faker) {
+    $data = array(
+        [
+            'title' => 'مدیر کل سیستم',
+            'status' => 1,
+        ],
+        [
+            'title' => 'مدیر سیستم',
+            'status' => 1,
+        ],
+        [
+            'title' => 'کاربر',
+            'status' => 1,
+        ]
+    );
+    return $data;
+});

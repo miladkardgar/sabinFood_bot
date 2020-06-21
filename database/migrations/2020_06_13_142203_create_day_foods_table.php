@@ -17,6 +17,7 @@ class CreateDayFoodsTable extends Migration
             $table->increments('id');
             $table->integer('food_id');
             $table->date('date');
+            $table->string('type');
             $table->softDeletes();
             $table->timestamps();
         });
